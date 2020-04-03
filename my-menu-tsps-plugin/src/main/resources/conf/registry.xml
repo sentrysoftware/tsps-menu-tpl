@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<registry>
+	<resources>
+		<resource startup="false">
+			<className>com.mycompany.mymenu.tsps.controller.MyMenuDeviceProvider</className>
+			<targets>
+				<target authenticate="true" method="GET"><![CDATA[.*/my-menu/.*]]></target>
+			</targets>
+		</resource>
+	</resources>
+</registry>

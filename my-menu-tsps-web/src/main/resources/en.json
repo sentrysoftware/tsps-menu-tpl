@@ -1,0 +1,7 @@
+{
+  "my-menu.name": "My Menu",
+  "my-menu.devices": "Devices",
+  "my-menu.devices.identifier": "Identifier",
+  "my-menu.devices.name": "Name",
+  "my-menu.devices.deviceListNotFound": "No device found!"
+}
