@@ -1,0 +1,64 @@
+<assembly>
+
+	<id>distribution</id>
+
+	<formats>
+		<format>zip</format>
+	</formats>
+
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<baseDirectory>${project.artifactId}</baseDirectory>
+
+	<moduleSets>
+
+		<!-- JAR files in /lib -->
+		<moduleSet>
+			<useAllReactorProjects>true</useAllReactorProjects>
+			<includes>
+				<include>${project.groupId}:my-menu-tsps-rest-api:jar</include>
+				<include>${project.groupId}:my-menu-tsps-core:jar</include>
+			</includes>
+			<binaries>
+				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
+				<outputDirectory>lib</outputDirectory>
+				<outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
+			</binaries>
+		</moduleSet>
+
+		<!-- WAR files in /app -->
+		<moduleSet>
+			<useAllReactorProjects>true</useAllReactorProjects>
+			<includes>
+				<include>*:war</include>
+			</includes>
+			<binaries>
+				<unpack>false</unpack>
+				<includeDependencies>false</includeDependencies>
+				<outputDirectory>app</outputDirectory>
+				<outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
+			</binaries>
+		</moduleSet>
+
+	</moduleSets>
+
+	<fileSets>
+
+		<!-- conf directory -->
+		<fileSet>
+			<directory>${project.build.directory}/classes</directory>
+			<outputDirectory></outputDirectory>
+		</fileSet>
+
+		<!-- dependencies in /lib/dependencies -->
+		<fileSet>
+			<directory>./</directory>
+			<outputDirectory>lib/dependencies</outputDirectory>
+			<excludes>
+				<exclude>**/*</exclude>
+			</excludes>
+		</fileSet>
+
+	</fileSets>
+
+</assembly>

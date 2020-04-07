@@ -1,0 +1,45 @@
+<!-- col-sm-12 is kinda mandatory here to avoid unnecessary scrollbars... -->
+<div class="my-menu-tsps col-sm-12" cg-busy="$ctrl.deviceListPromise">
+  <!-- Device list -->
+  <div ng-if="$ctrl.deviceListFound">
+    <title-section>
+      <title-bar>
+        <title-bar-group alignment="left">
+          <title-bar-item class="page-title">
+            <title-display>{{ "my-menu.devices" | translate }}</title-display>
+          </title-bar-item>
+        </title-bar-group>
+      </title-bar>
+    </title-section>
+
+    <table class="table table-condensed table-striped table-fixed device-table">
+      <thead>
+        <tr>
+          <th class="column-monitor">
+            {{ "my-menu.devices.identifier" | translate }}
+          </th>
+          <th class="column-monitor">
+            {{ "my-menu.devices.name" | translate }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="device in $ctrl.devices track by device.id">
+          <td class="column-monitor">
+            {{device.id}}
+          </td>
+          <td class="column-monitor">
+            {{device.name}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Error message if device could not be found -->
+  <div ng-if="!$ctrl.deviceListFound">
+    <message type="note"
+      >{{ "my-menu.devices.deviceListNotFound" | translate}}</message
+    >
+  </div>
+</div>

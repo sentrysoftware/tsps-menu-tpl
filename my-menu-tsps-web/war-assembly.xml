@@ -1,0 +1,72 @@
+<assembly>
+	<id>war</id>
+	<formats>
+		<format>war</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<dependencySets>
+
+		<!-- My Menu's Web app ==> / -->
+		<dependencySet>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>*:my-menu-tsps-web:jar:*</include>
+			</includes>
+			<unpack>true</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+
+		<!-- Potential JAR libraries (none at the moment) -->
+		<dependencySet>
+			<outputDirectory>WEB-INF/lib</outputDirectory>
+			<includes>
+				<include>*:*:jar:*</include>
+			</includes>
+			<excludes>
+				<exclude>*:my-menu-tsps-web:jar:*</exclude>
+			</excludes>
+			<scope>runtime</scope>
+			<useProjectArtifact>false</useProjectArtifact>
+			<useTransitiveDependencies>false</useTransitiveDependencies>
+		</dependencySet>
+
+	</dependencySets>
+
+	<fileSets>
+
+		<!-- Java code -->
+		<fileSet>
+			<directory>${project.build.directory}/classes</directory>
+			<outputDirectory>WEB-INF/classes</outputDirectory>
+			<useDefaultExcludes>true</useDefaultExcludes>
+		</fileSet>
+
+		<!-- My Menu's TSPS Web app -->
+		<fileSet>
+			<directory>${project.basedir}/src/main/webapp</directory>
+			<outputDirectory></outputDirectory>
+			<useDefaultExcludes>true</useDefaultExcludes>
+		</fileSet>
+
+	</fileSets>
+
+	<files>
+
+		<!-- META-INF/maven/.../pom.xml -->
+		<!-- This is a workaround to https://issues.apache.org/jira/browse/MASSEMBLY-835 -->
+		<file>
+			<source>pom.xml</source>
+			<outputDirectory>META-INF/maven/${project.groupId}/${project.artifactId}</outputDirectory>
+		</file>
+
+		<!-- pom.properties -->
+		<!-- This is a workaround to https://issues.apache.org/jira/browse/MASSEMBLY-835 -->
+		<file>
+			<source>pom.properties</source>
+			<outputDirectory>META-INF/maven/${project.groupId}/${project.artifactId}</outputDirectory>
+			<filtered>true</filtered>
+		</file>
+
+	</files>
+
+</assembly>

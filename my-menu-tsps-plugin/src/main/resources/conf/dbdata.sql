@@ -1,0 +1,2 @@
+-- adding properties
+-- insert into mymenu(key, value) values ('messageQueueSize', '500');
