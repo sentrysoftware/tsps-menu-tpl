@@ -37,6 +37,8 @@ This will build `my-menu-tsps-plugin\target\my-menu-tsps-plugin-1.0.00-SNAPSHOT.
 
 ## How to Install
 
+### Installation
+
 The first time, run the below command on the TSPS system, in the `/opt/bmc/TrueSightPServer/truesightpserver/bin` directory:
 
 ```sh
@@ -53,7 +55,28 @@ Note: The above examples assume the `my-menu-tsps-plugin\target\my-menu-tsps-plu
 
 TSPS is automatically restarted. Refresh your browser after a minute and your new *My Menu* component is now listed as available when creating or editing a *Component*! :-)
 
-![New exciting Menu when adding a component in TSPS](docs/images/configure_component.png)
+### Configuration
+
+1. Connect to the TrueSight Presentation Server interface as a Solution Administrator (typically, the admin account).
+2. Go to *Administration > Components* and add a new component.
+![Add the component in TSPS](docs/images/add_component.png)
+3. In the list of *Component Types*, *My Menu* must be listed if the installation was performed successfully.
+4. Select *My Menu* and provide the following information:
+
+| Property | Description | Default |
+|---|---|---|
+| *Host Name/IP Address* | The TSPS hostname which you are connected to                        |         |
+| *Port*                 | The TSPS port number which you are connected to                     | 443     |
+| *Protocol*             | HTTPS                                                               | HTTPS   |
+| *Tenant*	             | * (mandatory)                                                       |         |
+| *My Attribute*         | Custom component attribute, you can update the default value        | Default |
+
+5. Click *Save* to finish your configuration.
+![New Menu when adding a component in TSPS](docs/images/configure_component.png)
+
+You will see the *My Menu* component appears in the list of active components and *My Menu* will be be displayed in the global navigation menu.
+
+![My Menu component in TSPS](docs/images/configured_component_up.png)
 
 ## The Internals
 
@@ -80,6 +103,8 @@ When the plugin is installed in TSPS, it is loaded upon startup. The **.war** fi
 This registers *AssetProvider* and *I18nProvider* instances. The *MyMenuAssetProvider* class declares the **.js** and **.css** files in the `my-menu-tsps-web/src/main/webapp` directory that need to be loaded in the user browser. The *MyMenuI18nProvider* class declares the `my-menu-tsps-web/src/main/resources/en.json` files, which contains the text resources in English.
 
 The *MyMenuApplication.contextInitialized()* also registers the *MenuProvider* instance. The *MyMenuProvider* class declares the Menu hierarchy that needs to be displayed in TSPS when the application starts.
+
+Note: The log file *my-menu.log* is stored in the `/opt/bmc/TrueSightPServer/truesightpserver/logs` directory
 
 ### How Things Run in the Front
 

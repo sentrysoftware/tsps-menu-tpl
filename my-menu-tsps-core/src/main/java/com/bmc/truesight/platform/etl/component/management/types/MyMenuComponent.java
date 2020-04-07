@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import com.bmc.sas.domain.user.User;
-import com.bmc.sas.ngp.service.security.SecurityServiceImpl;
 import com.bmc.truesight.api.dto.ComponentAttributeEntity;
+import com.bmc.truesight.api.dto.ComponentAttributeEntity.ComponentAttributeType;
 import com.bmc.truesight.api.dto.exceptions.ComponentManagementException;
 import com.bmc.truesight.api.extended.component.ComponentsDAO;
 import com.bmc.truesight.component.IComponentType;
@@ -27,6 +26,8 @@ import com.bmc.tsps.common.services.i18n.I18nRegistry;
 public class MyMenuComponent extends ComponentType {
 
 
+	private static final String DEFAULT = "Default";
+
 	/**
 	 * The "type" of the Component (like "TSIM", "CO", etc.)
 	 */
@@ -37,14 +38,7 @@ public class MyMenuComponent extends ComponentType {
 	 */
 	private static final Log LOGGER = LogManager.getInstance().getLogger(COMPONENT_TYPE);
 
-	private static final String DEFAULT_USERNAME = "admin";
-
 	private boolean ready;
-
-	/**
-	 * Trusted user
-	 */
-	private User myMenuUser;
 
 	/**
 	 * Version of the Component
@@ -55,6 +49,11 @@ public class MyMenuComponent extends ComponentType {
 	 * Platform we're running on
 	 */
 	private final String osName;
+
+	/**
+	 * New custom attribute for the component
+	 */
+	private String myAttribute;
 
 	public MyMenuComponent() throws ComponentManagementException {
 
@@ -67,6 +66,24 @@ public class MyMenuComponent extends ComponentType {
 		super.setServerDefaultHttpsPort(443);
 		super.setServerProtocol("HTTPS");
 		super.setCheckProtocol(true);
+
+		// Create the component attribute and add it to the set of component attributes
+		this.getAttributes().add(new ComponentAttributeEntity(
+				"myAttribute",
+				"My attribute",
+				"my-menu.my-attribute.display",
+				DEFAULT,
+				ComponentAttributeType.TEXT,
+				DEFAULT,
+				"Custom component attribute example.", "my-menu.my-attribute.description",
+				2,
+				true,
+				255,
+				0,
+				(String) null,
+				"my-menu.my-attribute.required",
+				""
+			));
 
 		// Get and set version
 		version = this.getVersion();
@@ -157,28 +174,6 @@ public class MyMenuComponent extends ComponentType {
 
 	}
 
-	public User getMyMenuUser() {
-		return myMenuUser;
-	}
-
-	/**
-	 * @return The username configured in this Component, or "admin" if null or
-	 *         empty
-	 */
-	private String getUsername() {
-
-		final Optional<ComponentAttributeEntity> firstElement = super.getAttributes().stream()
-				.filter(attribute -> attribute.getKey().equals("username")).findFirst();
-
-		final String username = (firstElement.isPresent()) ? firstElement.get().getAttributeValue() : null;
-		if (username == null || username.trim().isEmpty()) {
-			return DEFAULT_USERNAME;
-		} else {
-			return username;
-		}
-
-	}
-
 	@Override
 	public void heartbeatNotification(final CalledFrom paramCalledFrom) throws ComponentManagementException {
 		// Not implemented
@@ -214,15 +209,19 @@ public class MyMenuComponent extends ComponentType {
 			throw new ComponentManagementException("There must be only 1 instance of the My Menu Component.");
 		}
 
-		// Retrieve the User configured in the My Menu Component
-		try {
-			myMenuUser = new SecurityServiceImpl().getUser(super.getServerTenant(), getUsername());
-		} catch (final Exception e) {
-			final String message = "MyMenuComponent: Could not instantiate configured user " + getUsername()
-					+ " for tenant "
-					+ super.getServerTenant();
-			LOGGER.error(message, e);
-			throw new ComponentManagementException(message, e);
+		// Set myAttribute
+		final Optional<ComponentAttributeEntity> myAttributeOptional = this.getAttributes().stream()
+				.filter(attribute -> attribute.getKey().equals("myAttribute")).findFirst();
+
+		if (myAttributeOptional.isPresent()) {
+			try {
+				// Get the configured value and set in the current instance
+				this.setMyAttribute(myAttributeOptional.get().getAttributeValue());
+			} catch (final Exception e) {
+				final String message = "MyMenuComponent: Could not configure myAttribute";
+				LOGGER.error(message, e);
+			}
+
 		}
 
 		// Now we're ready
@@ -319,5 +318,14 @@ public class MyMenuComponent extends ComponentType {
 
 		// Get version
 		return properties.getProperty("version", "N/A");
+	}
+
+	public String getMyAttribute() {
+		return myAttribute;
+	}
+
+	public void setMyAttribute(final String myAttribute) {
+		LOGGER.info("MyMenuComponent: configured myAttribute value: " + myAttribute);
+		this.myAttribute = myAttribute;
 	}
 }

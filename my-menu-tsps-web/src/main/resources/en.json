@@ -3,5 +3,8 @@
   "my-menu.devices": "Devices",
   "my-menu.devices.identifier": "Identifier",
   "my-menu.devices.name": "Name",
-  "my-menu.devices.deviceListNotFound": "No device found!"
+  "my-menu.devices.deviceListNotFound": "No device found!",
+  "my-menu.my-attribute.display": "My Attribute",
+  "my-menu.my-attribute.description": "Custom attribute for the My Menu component.",
+  "my-menu.my-attribute.required": "The Custom attribute is required to configure your component."
 }

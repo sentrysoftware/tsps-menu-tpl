@@ -21,14 +21,4 @@
   width: 30%;
   max-width: 300px;
   min-width: 80px;
-  font-family: Verdana, Arial, sans-serif;
-}
-
-#my-menu-dashboard {
-  color: rgb(178, 178, 178);
-  padding-left: 10px;
-  padding-top: 5px;
-  font-size: 3em;
-  font-family: OpenSans;
-  letter-spacing: -2px;
 }

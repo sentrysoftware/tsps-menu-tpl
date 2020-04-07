@@ -1,10 +1,17 @@
 <!-- col-sm-12 is kinda mandatory here to avoid unnecessary scrollbars... -->
-<div class="my-menu-tsps col-sm-12">
-    <!-- Device list -->
-    <div ng-if="$ctrl.deviceListFound" cg-busy="$ctrl.deviceListPromise">
-      <span id="my-menu-dashboard">Devices</span>
-    </div>
-  
+<div class="my-menu-tsps col-sm-12" cg-busy="$ctrl.deviceListPromise">
+  <!-- Device list -->
+  <div ng-if="$ctrl.deviceListFound">
+    <title-section>
+      <title-bar>
+        <title-bar-group alignment="left">
+          <title-bar-item class="page-title">
+            <title-display>{{ "my-menu.devices" | translate }}</title-display>
+          </title-bar-item>
+        </title-bar-group>
+      </title-bar>
+    </title-section>
+
     <table class="table table-condensed table-striped table-fixed device-table">
       <thead>
         <tr>
@@ -22,18 +29,17 @@
             {{device.id}}
           </td>
           <td class="column-monitor">
-           {{device.name}}
+            {{device.name}}
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  
-    <!-- Error message if device could not be found -->
-    <div ng-if="!$ctrl.deviceListFound">
-      <message type="note"
-        >{{ "my-menu.devices.deviceListNotFound" | translate}}</message
-      >
-    </div>
+
+  <!-- Error message if device could not be found -->
+  <div ng-if="!$ctrl.deviceListFound">
+    <message type="note"
+      >{{ "my-menu.devices.deviceListNotFound" | translate}}</message
+    >
   </div>
-  
+</div>
